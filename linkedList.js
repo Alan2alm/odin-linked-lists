@@ -1,9 +1,9 @@
 import { Node } from "./node.js";
 
 export class LinkedList {
-    constructor(node = null){
-        this._startingNode = node;
-        if(node != null){
+    constructor(nodeValue = null){
+        this._startingNode = new Node(nodeValue);
+        if(nodeValue != null){
             this._listSize = 1;
         }else{
             this._listSize = 0;
@@ -22,7 +22,7 @@ export class LinkedList {
         let selectedNode = this.tail();
         this._listSize++;
         if (selectedNode.nextNode == null){
-            selectedNode.nextNode(newNode);
+            selectedNode.nextNode = newNode;
         };
     }
 
@@ -35,7 +35,7 @@ export class LinkedList {
             return;
         }else{
             this._listSize++;
-            newNode.nextNode(this.head());
+            newNode.nextNode = this.head();
             this._startingNode = newNode;
         }
     }
@@ -52,7 +52,7 @@ export class LinkedList {
 
     //returns the last node in the list, if there is any.
     tail(){
-        let selectedNode;
+        let selectedNode = new Node();
         if(this.size() == 0){
             selectedNode = null;
         }else{
@@ -132,10 +132,10 @@ export class LinkedList {
 
     //returns the index of the node containing the given value.
     find(value){
-        let selectedNode = null;
+        let selectedNode = new Node();
         if(this.contains(value) == true){
             let i = 1;
-            selectedNode = this._startingNode;
+            selectedNode = this.head();
             let nextNode;
             while(i <= this.size() && found == false){
                 nextNode = selectedNode.nextNode;
@@ -155,5 +155,26 @@ export class LinkedList {
     //print the list in the console in the format: (value) -> (value) -> null
     toString(){
         //create an array that saves the values from the list nodes and use a for() to print them.
+        if(this.size() == 0){
+            return "null";
+        }else{
+            let valuesArray = [];
+            let currentNode = new Node();
+            currentNode = this.head();
+            let nextNode = new Node();
+            let index = 0;
+            while(index < this.size()){
+                if(currentNode != null){
+                    valuesArray.push(`( ${currentNode.value} )`);
+                    nextNode = currentNode.nextNode;
+                }
+                if(currentNode.nextNode == null){
+                    valuesArray.push("null");
+                };
+                currentNode = nextNode;
+                index++;
+            };
+            return valuesArray.join(" --> ");
+        }
     }
 }
